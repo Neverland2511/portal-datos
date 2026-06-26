@@ -251,9 +251,10 @@ var _sessionId = null;
 
 // ══ COMUNICACIÓN CON APPS SCRIPT (fetch en lugar de google.script.run) ══
 function api(action, params) {
+  var url = APPS_SCRIPT_URL + '?callback=handleResponse';
   return fetch(APPS_SCRIPT_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'text/plain' },
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify({ action: action, params: params || {} })
   })
   .then(function(r){ return r.json(); })
