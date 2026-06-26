@@ -251,15 +251,13 @@ var _sessionId = null;
 
 // ══ COMUNICACIÓN CON APPS SCRIPT (fetch en lugar de google.script.run) ══
 function api(action, params) {
-  var url = APPS_SCRIPT_URL;
-  return fetch(url, {
-    redirect: 'follow',
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify({ action: action, params: params || {} })
-  })
-  .then(function(r){ return r.json(); })
-  .catch(function(e){ return { ok: false, msg: 'Error de red: ' + e.message }; });
+  var url = APPS_SCRIPT_URL + 
+    '?action=' + encodeURIComponent(action) + 
+    '&params=' + encodeURIComponent(JSON.stringify(params || {}));
+  
+  return fetch(url, { method: 'GET', mode: 'cors' })
+    .then(function(r){ return r.json(); })
+    .catch(function(e){ return { ok: false, msg: 'Error de red: ' + e.message }; });
 }
 // ══ INICIO ══════════════════════════════════════════════════
 window.onload = function(){
